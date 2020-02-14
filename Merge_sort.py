@@ -73,4 +73,4 @@ print ("\n\nSorted array is")
 for i in range(n): 
 	print ("%d" %arr[i]), 
 
-# This code is contributed by Mohit Kumra 
+
