@@ -1,74 +1,70 @@
-# Python program for implementation of MergeSort 
+// C++ program to merge two sorted arrays in 
+// constant space 
 
-# Merges two subarrays of arr[]. 
-# First subarray is arr[l..m] 
-# Second subarray is arr[m+1..r] 
-def merge(arr, l, m, r): 
-	n1 = m - l + 1
-	n2 = r- m 
+#include <bits/stdc++.h> 
+using namespace std; 
 
-	# create temp arrays 
-	L = [0] * (n1) 
-	R = [0] * (n2) 
+// Function to merge two sorted arrays in 
+// constant space 
+void mergeArrays(int* a, int n, int* b, int m) 
+{ 
 
-	# Copy data to temp arrays L[] and R[] 
-	for i in range(0 , n1): 
-		L[i] = arr[l + i] 
+	// Convert second array into a min_heap 
+	// using make_heap() STL function [takes O(m)] 
+	make_heap(b, b + m, greater<int>()); 
 
-	for j in range(0 , n2): 
-		R[j] = arr[m + 1 + j] 
+	// Start traversing the first array 
+	for (int i = 0; i < n; i++) { 
 
-	# Merge the temp arrays back into arr[l..r] 
-	i = 0	 # Initial index of first subarray 
-	j = 0	 # Initial index of second subarray 
-	k = l	 # Initial index of merged subarray 
+		// If current element is greater than root 
+		// of min_heap 
+		if (a[i] > b[0]) { 
 
-	while i < n1 and j < n2 : 
-		if L[i] <= R[j]: 
-			arr[k] = L[i] 
-			i += 1
-		else: 
-			arr[k] = R[j] 
-			j += 1
-		k += 1
+			// Pop minimum element from min_heap using 
+			// pop_heap() STL function 
+			// The pop_heap() function removes the minimum element from 
+			// heap and moves it to the end of the container 
+			// converted to heap and reduces heap size by 1 
+			pop_heap(b, b + m, greater<int>()); 
 
-	# Copy the remaining elements of L[], if there 
-	# are any 
-	while i < n1: 
-		arr[k] = L[i] 
-		i += 1
-		k += 1
+			// Swapping the elements 
+			int tmp = a[i]; 
+			a[i] = b[m - 1]; 
+			b[m - 1] = tmp; 
 
-	# Copy the remaining elements of R[], if there 
-	# are any 
-	while j < n2: 
-		arr[k] = R[j] 
-		j += 1
-		k += 1
+			// Apply push_heap() function on the container 
+			// or array to again reorder it in the 
+			// form of min_heap 
+			push_heap(b, b + m, greater<int>()); 
+		} 
+	} 
 
-# l is for left index and r is right index of the 
-# sub-array of arr to be sorted 
-def mergeSort(arr,l,r): 
-	if l < r: 
+	// Convert the second array again into max_heap 
+	// because sort_heap() on min heap sorts the array 
+	// in decreasing order 
+	// This step is [O(m)] 
+	make_heap(b, b + m); // It's a max_heap 
 
-		# Same as (l+r)/2, but avoids overflow for 
-		# large l and h 
-		m = (l+(r-1))/2
+	// Sort the second array using sort_heap() function 
+	sort_heap(b, b + m); 
+} 
 
-		# Sort first and second halves 
-		mergeSort(arr, l, m) 
-		mergeSort(arr, m+1, r) 
-		merge(arr, l, m, r) 
+// Driver Code 
+int main() 
+{ 
 
+	int ar1[] = { 1, 5, 9, 10, 15, 20 }; 
+	int ar2[] = { 2, 3, 8, 13 }; 
+	int m = sizeof(ar1) / sizeof(ar1[0]); 
+	int n = sizeof(ar2) / sizeof(ar2[0]); 
+	mergeArrays(ar1, m, ar2, n); 
 
-# Driver code to test above 
-arr = [12, 11, 13, 5, 6, 7] 
-n = len(arr) 
-print ("Given array is") 
-for i in range(n): 
-	print ("%d" %arr[i]), 
+	cout << "After Merging :- \nFirst Array: "; 
+	for (int i = 0; i < m; i++) 
+		cout << ar1[i] << " "; 
+	cout << "\nSecond Array: "; 
+	for (int i = 0; i < n; i++) 
+		cout << ar2[i] << " "; 
 
-mergeSort(arr,0,n-1) 
-print ("\n\nSorted array is") 
-for i in range(n): 
-	print ("%d" %arr[i]), 
+	return 0; 
+} 
