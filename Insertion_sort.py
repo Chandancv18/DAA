@@ -18,9 +18,8 @@ def insertionSort(arr):
 		arr[j + 1] = key 
 
 
-# Driver code to test above 
 arr = [12, 11, 13, 5, 6] 
 insertionSort(arr) 
 for i in range(len(arr)): 
-	print ("% d" % arr[i]) \
+	print ("% d" % arr[i]) 
  
